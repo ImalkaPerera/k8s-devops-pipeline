@@ -66,6 +66,22 @@ kubectl port-forward svc/task-tracker-service 8080:80
 You can now access the interactive API documentation at:
 **[http://localhost:8080/docs](http://localhost:8080/docs)**
 
+## Continuous Delivery with ArgoCD
+
+This project uses ArgoCD for automated deployments. To access the ArgoCD UI:
+
+1. **Port-forward the ArgoCD Server**:
+   ```bash
+   kubectl port-forward svc/argocd-server -n argocd 8081:443
+   ```
+2. **Access the UI**: Navigate to [https://localhost:8081](https://localhost:8081)
+3. **Login**: 
+   - **Username**: `admin`
+   - **Password**: Retrieve the initial password using the following command:
+     ```bash
+     kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | % { [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($_)) }
+     ```
+
 ## API Endpoints
 
 - `GET /health`: Health check endpoint for Kubernetes liveness/readiness probes.
