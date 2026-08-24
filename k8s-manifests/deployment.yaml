@@ -17,6 +17,17 @@ spec:
       containers:
       - name: task-tracker-api
         image: task-tracker-api:latest
-        imagePullPolicy: Never # Forces the cluster to use the local image
+        imagePullPolicy: Never
         ports:
         - containerPort: 8000
+        envFrom:
+        - configMapRef:
+            name: postgres-config
+        env:
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_PASSWORD
+        - name: POSTGRES_HOST
+          value: "postgres-service"
